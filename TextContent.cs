@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TextContentManagement // namespace = a folder analogy for contents within (under) in {...} brackets. 
-                                // To invoke/refer:
-                                // a) full name use e.g. TextContentManagement.TextContent Title = new TextContentManagement.TextContennt() ; 
-                                //               OR
-                                // b) using TextContentManagement;
-                                //    TextContent Title = new TextContent();
+namespace TextContentManagement /* namespace = a folder analogy for contents within (under) in {...} brackets. 
+                                   To invoke/refer:
+                                   a) full name use e.g. TextContentManagement.TextContent Title = new TextContentManagement.TextContennt() ; 
+                                                OR
+                                   b) using TextContentManagement;
+                                    TextContent Title = new TextContent(); */
 {
     public class TextContent //changed from "internal" to "public" for accessibility.
     {
@@ -38,11 +38,13 @@ namespace TextContentManagement // namespace = a folder analogy for contents wit
             
            
                     Title = title; // Primary Constructor would look as public string Title { get; set; } = title; giving an option to make it Immutable (not changable) without set;
-                    //
+                    
                     Author = author; // Capital & lower case letters for organization/clarity, where author is a Parameter given to a Property of the Object that is public TextContent.
-                    //
+                    
                     SerialNumber = serialnumber; 
+              
                     Year = year; 
+              
                     Availability = true; // default value because TextContent is just created.
             }
     }
