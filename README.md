@@ -1,1 +1,1 @@
-A repository for a collection of objects.
+A repository for a collection of projects.
