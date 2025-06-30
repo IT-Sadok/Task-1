@@ -1,9 +1,8 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197 d17.13
+VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextContentManagement2", "TextContentManagement2.csproj", "{631F0EF9-0525-4565-B752-FB4782EF4656}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextContentManagement2", "TextContentManagement2.csproj", "{1192208B-E1F3-01A5-3E06-FE90BC2A2059}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +10,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{631F0EF9-0525-4565-B752-FB4782EF4656}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{631F0EF9-0525-4565-B752-FB4782EF4656}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{631F0EF9-0525-4565-B752-FB4782EF4656}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{631F0EF9-0525-4565-B752-FB4782EF4656}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1192208B-E1F3-01A5-3E06-FE90BC2A2059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1192208B-E1F3-01A5-3E06-FE90BC2A2059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1192208B-E1F3-01A5-3E06-FE90BC2A2059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1192208B-E1F3-01A5-3E06-FE90BC2A2059}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {37DF6D96-AF49-4886-8DD2-B73834863C51}
+		SolutionGuid = {BA6B0DE1-06E5-438A-8F5B-3AE81BBF2DC5}
 	EndGlobalSection
 EndGlobal

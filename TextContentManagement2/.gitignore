@@ -1,0 +1,31 @@
+# Build results
+bin/                  # Compiled binaries and output files from the build process.
+obj/                  # Intermediate object files and other build artifacts.
+
+# User-specific files
+*.suo                 # Solution User Options file, stores user-specific settings.
+*.user                # User-specific project settings.
+*.userprefs           # User preferences for the project.
+.vs/                  # Visual Studio specific files and settings.
+
+# NuGet Packages
+packages/             # Folder for NuGet packages, can be restored from the project file.
+
+# Logs and temporary files
+*.log                 # Log files generated during application runtime.
+*.tmp                 # Temporary files created during execution.
+*.temp                # Temporary files, often used for intermediate storage.
+
+# Configuration files
+appsettings.Development.json  # Development configuration file, may contain sensitive data.
+appsettings.json             # Main configuration file, may contain sensitive data.
+
+# IDE specific files
+.vscode/              # Visual Studio Code settings and configurations.
+.idea/                # JetBrains Rider project settings (if applicable).
+
+# Other files
+*.dll                 # Compiled dynamic link libraries, should not be versioned.
+*.exe                 # Compiled executable files, should not be versioned.
+*.pdb                 # Debugging files, generated during the build process.
+*.mdb                 # Mono debugging files, not needed for version control.

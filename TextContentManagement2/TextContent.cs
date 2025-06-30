@@ -1,18 +1,34 @@
 ﻿namespace TextContentManagement2
 {
-    public class TextContent // Creating a "class" that is "public" - a defenition for a computer for what to work with that can be accesses by other classes.
+
+    // Class creation - a defenition of its contents (parameters, methods, etc.) when referenced.
+    public class TextContent
     {
         public string Title { get; set; }
         public string Author { get; set; }
         public string SerialNumber { get; set; }
-        public int Year { get; set; }
+        public int? YearValue { get; set; } // null enabled.
+        public bool Availability { get; set; }
 
-        public TextContent(string title, string author, string serialNumber, int year) // Creating a constructor for reventing null references to the parameters of the class. 
+
+        // Constructor creation for null control.
+        public TextContent(string title, string author, string serialNumber, int? year)
         {
-            Title = title; // No verification of parameters for simplicity.
-            Author = author;
-            SerialNumber = serialNumber;
-            Year = year;
+            Title = title ?? "NO ENTRY"; // If ("??") null, then the message ().
+            Author = author ?? "NO ENTRY";
+            SerialNumber = serialNumber ?? "NO ENTRY";
+            YearValue = year;           // Passes YearValue to YearDisplay.
+            Availability = true;
         }
+
+
+        // Year conversion for UI display.
+        public string YearDisplay => YearValue switch // "switch" evaluates int returning string.
+        {
+            null => "NO ENTRY",                       // "=>" equals "if".
+            < 0 => $"{Math.Abs(YearValue.Value)} BC", // "Abs" converts negative int.
+            0 => "0 AD",
+            _ => $"{YearValue}"                       // "${}" embeds expressions within strings.
+        };
     }
 }
