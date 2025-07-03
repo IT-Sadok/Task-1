@@ -1,24 +1,33 @@
 ﻿namespace TextContentManagement2
 {
-
     // Class creation - a defenition of its contents (parameters, methods, etc.) when referenced.
     public class TextContent
     {
         public string Title { get; set; }
         public string Author { get; set; }
         public string SerialNumber { get; set; }
-        public int? YearValue { get; set; } // null enabled.
+        public int? YearValue { get; set; }    // null enabled BY DEFAULT.
         public bool Availability { get; set; }
 
 
-        // Constructor creation for null control.
-        public TextContent(string title, string author, string serialNumber, int? year)
+        // Parameterless Constructor ENABLES PROPERTY-BASED DESERIALIZATION, which values are not null by default.
+        public TextContent()
         {
-            Title = title ?? "NO ENTRY"; // If ("??") null, then the message ().
-            Author = author ?? "NO ENTRY";
-            SerialNumber = serialNumber ?? "NO ENTRY";
-            YearValue = year;           // Passes YearValue to YearDisplay.
-            Availability = true;
+            Title = "NO ENTRY";  // Exact name match for JSON Serializer, assigned value because not null by default.
+            Author = "NO ENTRY";
+            SerialNumber = "NO ENTRY";
+            Availability = true; // Set "true" to initialize in the constructor.
+        }
+
+
+        // Parameterized Constructor for null control.
+        public TextContent(string title, string author, string serialNumber, int? year)
+        : this()                                                           // Calling the parameterless Constructor.
+        {
+            Title = string.IsNullOrWhiteSpace(title) ? "NO ENTRY" : title; // If ("??") null, then the message ().
+            Author = string.IsNullOrWhiteSpace(author) ? "NO ENTRY" : author;
+            SerialNumber = string.IsNullOrWhiteSpace(serialNumber) ? "NO ENTRY" : serialNumber;
+            YearValue = year;                                              // Passes YearValue to YearDisplay.
         }
 
 

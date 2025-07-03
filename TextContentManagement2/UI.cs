@@ -29,7 +29,7 @@ namespace TextContentManagement2
                 Console.WriteLine("4 - Search;");
                 Console.WriteLine("5 - Delete;");
                 Console.WriteLine("6 - Save & Exit.");
-                Console.Write("on choosing # press ENTER to proceed:");
+                Console.Write("on choosing # press ENTER to proceed: ");
 
                 switch (Console.ReadLine()?.Trim())
                 {
@@ -55,11 +55,47 @@ namespace TextContentManagement2
             Console.Write("Enter Serial Number: ");
             string serialNumber = Console.ReadLine()?.Trim() ?? "";
 
-            Console.Write("Enter Year. For BC, enter a negative number (e.g. -10 is 10 BC): ");
-            int? year = int.TryParse(Console.ReadLine(), out int y) ? y : null; // Convet string to int, store it in y "out in y)" if parsing succeeds. If fails "?", assign ":" null.
 
+            // Correct year input.
+            int? year = null;
+            bool yearCheck = false;
+            while (!yearCheck)
+            {
+                Console.Write("Enter Year (negative numbers for BC, e.g. -10 = 10 BC): ");
+                string yearInput = Console.ReadLine()?.Trim() ?? ""; // if "??" null, converts to an empty string.
+
+                // blank to "NO ENTRY".
+                if (string.IsNullOrWhiteSpace(yearInput))
+                {
+                    year = null;
+                    yearCheck = true;
+                }
+                // Valid number check.
+                else if (int.TryParse(yearInput, out int parsedYear))
+                {
+                    year = parsedYear;
+                    yearCheck = true;
+
+                }
+                else
+                {
+                    Console.WriteLine("Enter Valid Year. ");
+                }
+
+            }
+
+            // Rejection if all fields are empty.
+            if (string.IsNullOrWhiteSpace(title) &&
+                string.IsNullOrWhiteSpace(author) &&
+                string.IsNullOrWhiteSpace(serialNumber) &&
+                year == null)
+            {
+                Console.WriteLine("Entry Rejected. ");
+                return; // Exit without saving.
+            }
+            
             _record.Add(new TextContent(title, author, serialNumber, year));
-            Console.WriteLine("Text Content Added");
+            Console.WriteLine("Text Content Added.");
         }
 
         private void AccessTextContent()
@@ -112,7 +148,7 @@ namespace TextContentManagement2
 
             if (string.IsNullOrWhiteSpace(term))
             {
-                Console.WriteLine("Enter Search Term.");
+                Console.WriteLine("Enter Search Term: ");
                 return;
             }
 
@@ -138,7 +174,8 @@ namespace TextContentManagement2
         private void SaveAndExit()
         {
             _storage.SaveTextContent(_record);
-            Console.WriteLine("Text Content saved. Exiting...");
+            Console.WriteLine("Text Content saved. Exiting ...");
+            Console.ResetColor(); // Accessible runtime to reset the console's color.
             Environment.Exit(0);
         }
 
@@ -159,8 +196,8 @@ namespace TextContentManagement2
             {
                 // The loop.
                 var item = items[i];
-                Console.WriteLine($"{i + 1}. {(item.Availability ? "Available " : "Not Available ")} " // "{i + 1}" displays next item, showing "?" availability.
-                + $"{item.Title} ({item.YearDisplay}) by {item.Author}, SN:{item.SerialNumber}");
+                Console.WriteLine($"{i + 1}. {item.Title} ({item.YearDisplay}) by {item.Author}, Serial Number: {item.SerialNumber}; " // "{i + 1}" displays next item, showing "?" availability.
+                + $"{(item.Availability ? "Available" : "Not Available")}");
             }
         }
 
@@ -185,13 +222,13 @@ namespace TextContentManagement2
 
             if (matches.Count == 1) return matches[0];                                                   // if only one item in the list "matches.Count == 1", "return" the item item "matches[0];
 
-            Console.Write("Enter Item Number ");
+            Console.Write("Enter Item Number.");
 
             // Displaying items in a list for user to select a match.
             if (int.TryParse(Console.ReadLine(), out int match) && match > 0 && match <= matches.Count) // Parsing list option to int "int.TryParse(..., our int match). Checking if match is within the list options "match > 0 && matches.Count".
                 return matches[match - 1];                                                              // List starts from 0. If user selects 1, need to substract to match it.
 
-            Console.WriteLine("Invalid Term");
+            Console.WriteLine("Invalid Term.");
             return null;
         }
     }

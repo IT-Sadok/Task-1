@@ -5,7 +5,11 @@ using TextContentManagement2;
 class Program
 {
     static void Main()
+    
     {
+
+        Logo.LogoDisplay();
+
         // 1. Initializing Storage Selector.
         var storagePath = new StoragePath();
         storagePath.StorageOption();

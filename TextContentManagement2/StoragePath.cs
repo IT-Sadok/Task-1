@@ -9,36 +9,44 @@ namespace TextContentManagement2
 
         public void StorageOption()
         {
-            Console.WriteLine("Choose Text Content storage:");
-            Console.WriteLine("1 - New Storage;");
-            Console.WriteLine("2 - Load Storage (from JSON file);");
-            Console.WriteLine("3 - Use Default Storage;");
-            Console.WriteLine("4 - Delete Storage.");
-            Console.WriteLine("5 - EXIT");
-            Console.WriteLine("on choosing # press ENTER to proceed:");
-
-            switch (Console.ReadLine()?.Trim()) // null check on imput.
+            while (true) // run until user exits.
             {
-                case "1":
-                    NewStorage();
-                    break;
-                case "2":
-                    LoadStorage();
-                    break;
-                case "3":
-                    DefaultStorage();
-                    break;
-                case "4":
-                    DeleteStorage();
-                    break;
-                case "5":
-                    Environment.Exit(0);
-                    break;
-                default:
-                    Console.WriteLine("Choose from 1 - 5 to proceed");
-                    break;
+                Console.WriteLine("Choose Text Content storage:");
+                Console.WriteLine("1 - New Storage;");
+                Console.WriteLine("2 - Load Storage (from JSON file);");
+                Console.WriteLine("3 - Use Default Storage;");
+                Console.WriteLine("4 - Delete Storage.");
+                Console.WriteLine("5 - EXIT");
+                Console.WriteLine("on choosing # press ENTER to proceed: ");
+
+                switch (Console.ReadLine()?.Trim())             // null check on imput.
+                {
+                    case "1":
+                        NewStorage();
+                        if (ChosenStoragePath != null) return; // Exit after successful setup.
+                        break;
+                    case "2":
+                        LoadStorage();
+                        if (ChosenStoragePath != null) return;
+                        break;
+                    case "3":
+                        DefaultStorage();
+                        if (ChosenStoragePath != null) return;
+                        break;
+                    case "4":
+                        DeleteStorage();                      // Stays in the loop.
+                        break;
+                    case "5":
+                    Console.WriteLine("Exiting ...");
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("Choose from 1 - 5 to proceed");
+                        break;
+                }
             }
         }
+
         private void NewStorage()
         {
             while (true)
@@ -121,6 +129,7 @@ namespace TextContentManagement2
 
             }
         }
+
         private void DefaultStorage()
         {
             ChosenStoragePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TextContent.json");
