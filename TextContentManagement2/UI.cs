@@ -22,20 +22,22 @@ namespace TextContentManagement2
         {
             while (true)
             {
-                Console.WriteLine("\nText Content Records");
-                Console.WriteLine("1 - Add New;");
-                Console.WriteLine("2 - Access;");
-                Console.WriteLine("3 - View All;");
-                Console.WriteLine("4 - Search;");
-                Console.WriteLine("5 - Delete;");
-                Console.WriteLine("6 - Save & Exit.");
-                Console.Write("on choosing # press ENTER to proceed: ");
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine("\n========================================================================");
+                Console.WriteLine("Text Content Records                                                    ");
+                Console.WriteLine("\n1 - Add New;                                                          ");
+                Console.WriteLine("2 - Access;                                                             ");
+                Console.WriteLine("3 - Sort by;                                                            ");
+                Console.WriteLine("4 - Search;                                                             ");
+                Console.WriteLine("5 - Delete;                                                             ");
+                Console.WriteLine("\n6 - Save & Exit.                                                      ");
+                Console.WriteLine("\non choosing # press ENTER to proceed:                                 ");
 
                 switch (Console.ReadLine()?.Trim())
                 {
                     case "1": AddTextContent(); break;
                     case "2": AccessTextContent(); break;
-                    case "3": ViewTextContent(); break;
+                    case "3": SortTextContent(); break;
                     case "4": SearchTextContent(); break;
                     case "5": DeleteTextContent(); break;
                     case "6": SaveAndExit(); return;
@@ -46,14 +48,16 @@ namespace TextContentManagement2
 
         private void AddTextContent()
         {
-            Console.Write("Enter Title: ");
+            Console.WriteLine("\n====================================================");
+            Console.WriteLine("Enter Title: ");
             string title = Console.ReadLine()?.Trim() ?? "";                    // Check if not null "?." before proceeding, remove "Trim()" white spaces after input, assign "??" ""(null) if left side is empty.
 
-            Console.Write("Enter Author: ");
+            Console.WriteLine("Enter Author: ");
             string author = Console.ReadLine()?.Trim() ?? "";
 
-            Console.Write("Enter Serial Number: ");
+            Console.WriteLine("Enter Serial Number: ");
             string serialNumber = Console.ReadLine()?.Trim() ?? "";
+            
 
 
             // Correct year input.
@@ -79,9 +83,9 @@ namespace TextContentManagement2
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("Enter Valid Year. ");
                 }
-
             }
 
             // Rejection if all fields are empty.
@@ -90,11 +94,13 @@ namespace TextContentManagement2
                 string.IsNullOrWhiteSpace(serialNumber) &&
                 year == null)
             {
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("Entry Rejected. ");
                 return; // Exit without saving.
             }
             
             _record.Add(new TextContent(title, author, serialNumber, year));
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Text Content Added.");
         }
 
@@ -105,40 +111,111 @@ namespace TextContentManagement2
 
             if (!item.Availability)
             {
-                Console.WriteLine("Already in Access.");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Not Available.");
                 return;
             }
 
             item.Availability = false;
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"Accessed: {item.Title}");
         }
 
-        private void ViewTextContent()
+        private void SortTextContent()
         {
             if (!_record.Any())
             {
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("Not Found.");
                 return;
             }
+            Console.WriteLine("\n============================");
+            Console.WriteLine("Sort by:");
+            Console.WriteLine("\n1 - Title (A-Z);");
+            Console.WriteLine("2 - Title (Z-A);");
+            Console.WriteLine("\n3 - Year (Newest);");
+            Console.WriteLine("4 - Year (Oldest);");
+            Console.WriteLine("\n5 - Group by Author;");
+            Console.WriteLine("6 - Group by Year.");
 
-            Console.WriteLine("\nSort by:");
-            Console.WriteLine("1 - Title (A-Z)");
-            Console.WriteLine("2- Title (Z-A)");
-            Console.WriteLine("3 - Year (Newest)");
-            Console.WriteLine("4 - Year (Oldest)");
-
-            // Display options for all TextContent.
-            List<TextContent> sorted = Console.ReadLine() switch
+            // "=>" was for returning values, ":" is for performing action (because of GroupBy introduction), needing "break" to contain condition;
+            // LINQ use in OrderBy and ToList extension methods (present before grouping methods).
+            switch (Console.ReadLine()?.Trim())
             {
-                "1" => _record.OrderBy(item => item.Title).ToList(),              // key assigns "=>" list collection "_record" to order every "item" by "item.Title", converting "ToList()" to a list
-                "2" => _record.OrderByDescending(item => item.Title).ToList(),
-                "3" => _record.OrderByDescending(item => item.YearValue).ToList(),
-                "4" => _record.OrderBy(item => item.YearValue).ToList(),
-                _ => _record                                                     // returning "_ =>" Text Contents "_record" once sorting option is chosen.           
-            };                                                                   // need ";" after a lambda expression.
-            // Display (method below) "sorted" items.
-            DisplayItems(sorted);
+                case "1":
+                Console.WriteLine("\n========================================================================");
+                    DisplayItems(_record.OrderBy(x => x.Title).ToList()); // Descending letters, after outputing in a list format.
+                    Console.WriteLine("");
+                    break;
+                case "2":
+                Console.WriteLine("\n========================================================================");
+                    DisplayItems(_record.OrderByDescending(x => x.Title).ToList());
+                    Console.WriteLine("");
+                    break;
+                case "3":
+                Console.WriteLine("\n========================================================================");
+                    DisplayItems(_record.OrderByDescending(x => x.YearValue).ToList()); // Descending years.
+                    Console.WriteLine("");
+                    break;
+                case "4":
+                Console.WriteLine("\n========================================================================");
+                    DisplayItems(_record.OrderBy(x => x.YearValue).ToList());
+                    Console.WriteLine("");
+                    break;
+                case "5":
+                    GroupByAuthor();
+                    break;
+                case "6":
+                    GroupByYear();
+                    break;
+                default:
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("Choose from 1 - 6 to proceed");
+                    break;
+            }
+            ;                                                                   
         }
+
+        // LINQ GroupBy introduced.
+        private void GroupByAuthor()
+        {
+            Console.WriteLine("\n========================================================================");
+            var byAuthor = _record
+            .GroupBy(item => item.Author) // First grouping.
+            .OrderBy(g => g.Key);         // Sorting after grouping (similar to ToList).
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"\nTotal Authors: {byAuthor.Count()}");
+
+            foreach (var group in byAuthor)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                Console.WriteLine($"\nAuthor: {group.Key}, {group.Count()} record(s):"); // Output format;
+                DisplayItems(group.ToList());                                            // Using the display method of TextContent's parameters.
+            }
+            Console.WriteLine();
+        }
+
+        private void GroupByYear()
+        {
+            Console.WriteLine("\n========================================================================");
+            var byYear = _record
+            .GroupBy(item => item.YearValue)
+            .OrderByDescending(g => g.Key);
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"\nYear Records: {byYear.Count()}");
+
+            foreach (var group in byYear)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                string yearDisplay = group.First().YearDisplay;
+                Console.WriteLine($"\nYear: {yearDisplay}, {group.Count()} record(s):");
+                DisplayItems(group.ToList());
+            }
+            Console.WriteLine("");
+        }
+
 
         // Search with wide match for user freedom enabled.
         private void SearchTextContent()
@@ -159,6 +236,7 @@ namespace TextContentManagement2
             item.YearDisplay.Contains(term)
             ).ToList();                                                              // Calling filtered resulsts to the list. Expressin closed ";".
 
+            Console.ForegroundColor = ConsoleColor.White;
             DisplayItems(results);
         }
 
@@ -168,13 +246,16 @@ namespace TextContentManagement2
             if (item == null) return;
 
             _record.Remove(item);
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"Deleted: {item.Title}");
         }
 
         private void SaveAndExit()
         {
             _storage.SaveTextContent(_record);
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Text Content saved. Exiting ...");
+            Console.WriteLine("");
             Console.ResetColor(); // Accessible runtime to reset the console's color.
             Environment.Exit(0);
         }
@@ -184,20 +265,19 @@ namespace TextContentManagement2
         {
             if (!items.Any())
             {
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("Not Found.");
                 return;
             }
-
-            Console.WriteLine("\nText Content Status");
-            Console.WriteLine("--------------------------------------");
 
             // A loop itirating over "items", where "i" is the collection's count, incrementing by 1 "i++" until reaching last item "<items.Count;"
             for (int i = 0; i < items.Count; i++)
             {
                 // The loop.
                 var item = items[i];
-                Console.WriteLine($"{i + 1}. {item.Title} ({item.YearDisplay}) by {item.Author}, Serial Number: {item.SerialNumber}; " // "{i + 1}" displays next item, showing "?" availability.
-                + $"{(item.Availability ? "Available" : "Not Available")}");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"\n{i + 1}. {item.Title} ({item.YearDisplay}) by {item.Author}, Serial Number: {item.SerialNumber}; " // "{i + 1}" displays next item, showing "?" availability.
+                + $"Status: {(item.Availability ? "Available" : "Not Available")}");
             }
         }
 
@@ -213,6 +293,7 @@ namespace TextContentManagement2
 
             if (!matches.Any())
             {
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("Not Found.");
                 return null;
             }
@@ -228,6 +309,7 @@ namespace TextContentManagement2
             if (int.TryParse(Console.ReadLine(), out int match) && match > 0 && match <= matches.Count) // Parsing list option to int "int.TryParse(..., our int match). Checking if match is within the list options "match > 0 && matches.Count".
                 return matches[match - 1];                                                              // List starts from 0. If user selects 1, need to substract to match it.
 
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Invalid Term.");
             return null;
         }

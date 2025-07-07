@@ -11,13 +11,18 @@ namespace TextContentManagement2
         {
             while (true) // run until user exits.
             {
-                Console.WriteLine("Choose Text Content storage:");
-                Console.WriteLine("1 - New Storage;");
-                Console.WriteLine("2 - Load Storage (from JSON file);");
-                Console.WriteLine("3 - Use Default Storage;");
-                Console.WriteLine("4 - Delete Storage.");
-                Console.WriteLine("5 - EXIT");
-                Console.WriteLine("on choosing # press ENTER to proceed: ");
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                Console.WriteLine("\n========================================================================");
+                Console.WriteLine("Storage Options:                                                        ");
+                Console.WriteLine("                                                                        ");
+                Console.WriteLine("1 - New;                                                                ");
+                Console.WriteLine("2 - Load (from JSON file);                                              ");
+                Console.WriteLine("3 - Use Default;                                                        ");
+                Console.WriteLine("4 - Delete.                                                             ");
+                Console.WriteLine("                                                                        ");
+                Console.WriteLine("5 - EXIT                                                                ");
+                Console.WriteLine("                                                                        ");
+                Console.WriteLine("on choosing # press ENTER to proceed:                                   ");
 
                 switch (Console.ReadLine()?.Trim())             // null check on imput.
                 {
@@ -37,10 +42,13 @@ namespace TextContentManagement2
                         DeleteStorage();                      // Stays in the loop.
                         break;
                     case "5":
-                    Console.WriteLine("Exiting ...");
+
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("Exiting ...");
                         Environment.Exit(0);
                         break;
                     default:
+                        Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine("Choose from 1 - 5 to proceed");
                         break;
                 }
@@ -51,9 +59,12 @@ namespace TextContentManagement2
         {
             while (true)
             {
-                Console.WriteLine("Enter full path for a new JSON file: ");
-                Console.WriteLine(" or ");
-                Console.WriteLine("Enter 5 to return to the previous menu: ");
+                Console.WriteLine("\n=========================================");
+                Console.WriteLine("Enter full path for a new JSON file      ");
+                Console.WriteLine("                                         ");
+                Console.WriteLine("                 or                      ");
+                Console.WriteLine("                                         ");
+                Console.WriteLine("Enter 5 to return to the previous menu:  ");
                 string? input = Console.ReadLine()?.Trim();
 
                 if (string.Equals(input, "5"))
@@ -61,6 +72,7 @@ namespace TextContentManagement2
 
                 if (string.IsNullOrWhiteSpace(input))
                 {
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("Enter valid path. ");
                     continue;
                 }
@@ -71,6 +83,7 @@ namespace TextContentManagement2
 
                     if (string.IsNullOrEmpty(directory))
                     {
+                        Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine("Invalid path.");
                         continue;
                     }
@@ -81,11 +94,14 @@ namespace TextContentManagement2
                     // initializing JSON file.
                     File.WriteAllText(input, "[]");
                     ChosenStoragePath = input;
+
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine($"Created new storage at: {ChosenStoragePath}");
                     return;
                 }
                 catch (Exception ex)
                 {
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine($"Error: {ex.Message}");
                 }
             }
@@ -95,8 +111,11 @@ namespace TextContentManagement2
         {
             while (true)
             {
-                Console.Write("Enter storage path (JSON file location): ");
-                Console.WriteLine(" or ");
+                Console.WriteLine("\n========================================");
+                Console.WriteLine("Enter storage path (JSON file location) ");
+                Console.WriteLine("                                        ");
+                Console.WriteLine("                 or                     ");
+                Console.WriteLine("                                        ");
                 Console.WriteLine("Enter 5 to return to the previous menu: ");
                 string? input = Console.ReadLine()?.Trim();
 
@@ -105,7 +124,9 @@ namespace TextContentManagement2
 
                 if (string.IsNullOrWhiteSpace(input) || !File.Exists(input))
                 {
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("Enter valid path:");
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
                     continue;
                 }
 
@@ -115,15 +136,18 @@ namespace TextContentManagement2
                     string JSONcheck = File.ReadAllText(input);
                     if (!JSONcheck.Trim().StartsWith('[') || !JSONcheck.Trim().EndsWith(']'))
                     {
+                        Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine("JSON files only.");
                         continue;
                     }
                     ChosenStoragePath = input;
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine($"Loading from: {ChosenStoragePath}");
                     return;
                 }
                 catch (Exception ex)
                 {
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine($"Error: {ex.Message}");
                 }
 
@@ -139,6 +163,7 @@ namespace TextContentManagement2
             {
                 File.WriteAllText(ChosenStoragePath, "[]");
             }
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"Using default storage: {ChosenStoragePath}");
         }
 
@@ -146,9 +171,12 @@ namespace TextContentManagement2
         {
             while (true)
             {
+                Console.WriteLine("\n=================================================");
                 Console.WriteLine("Enter full path of JSON's file to delete storage:");
-                Console.WriteLine("or");
-                Console.WriteLine("Enter 5 to return to previous menu:");
+                Console.WriteLine("                                                 ");
+                Console.WriteLine("                    or                           ");
+                Console.WriteLine("                                                 ");
+                Console.WriteLine("Enter 5 to return to previous menu:"              );
                 string? input = Console.ReadLine()?.Trim();
 
                 if (string.Equals(input, "5"))
@@ -156,23 +184,29 @@ namespace TextContentManagement2
 
                 if (string.IsNullOrWhiteSpace(input))
                 {
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("Enter valid path.");
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
                     continue;
                 }
                 try
                 {
                     if (!File.Exists(input))
                     {
+                        Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine("File not found.");
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
                         continue;
                     }
 
                     File.Delete(input);
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine($"Storage file Deleted: {input}");
                     return;
                 }
                 catch (Exception ex)
                 {
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine($"Deletion failed: {ex.Message}");
                 } 
 
